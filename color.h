@@ -1,6 +1,7 @@
 #ifndef COLOR_H
 #define COLOR_H
 
+#include "interval.h"
 #include "vec3.h"
 
 #include <iostream>
@@ -13,12 +14,13 @@ void write_color(std::ostream &out, const color &pixel_color) {
     auto b = pixel_color.z();
 
     // Translate the [0,1] component values to the byte range [0,255].
-    const int rByte = static_cast<int>(255.999 * r);
-    const int gByte = static_cast<int>(255.999 * g);
-    const int bByte = static_cast<int>(255.999 * b);
+    static const interval intensity(0.000, 0.999);
+    int rbyte = int(256 * intensity.clamp(r));
+    int gbyte = int(256 * intensity.clamp(g));
+    int bbyte = int(256 * intensity.clamp(b));
 
     // Write out the pixel color components.
-    out << rByte << ' ' << gByte << ' ' << bByte << '\n';
+    out << rbyte << ' ' << gbyte << ' ' << bbyte << '\n';
 }
 
 #endif
