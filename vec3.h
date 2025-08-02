@@ -52,6 +52,12 @@ public:
         return e[0] * e[0] + e[1] * e[1] + e[2] * e[2];
     }
 
+    bool near_zero() const {
+        // Return true if the vector is close to zero in all dimensions.
+        auto s = 1e-8;
+        return (std::fabs(e[0]) < s) && (std::fabs(e[1]) < s) && (std::fabs(e[2]) < s);
+    }
+
     static vec3 random() {
         return vec3(random_double(), random_double(), random_double());
     }
@@ -130,30 +136,8 @@ inline vec3 random_on_hemisphere(const vec3 &normal) {
     return -on_unit_sphere;
 }
 
-#endif
-
-
-#ifndef COLOR_H
-#define COLOR_H
-
-#include "vec3.h"
-
-#include <iostream>
-
-using color = vec3;
-
-void write_color(std::ostream &out, const color &pixel_color) {
-    auto r = pixel_color.x();
-    auto g = pixel_color.y();
-    auto b = pixel_color.z();
-
-    // Translate the [0,1] component values to the byte range [0,255].
-    const int rByte = static_cast<int>(255.999 * r);
-    const int gByte = static_cast<int>(255.999 * g);
-    const int bByte = static_cast<int>(255.999 * b);
-
-    // Write out the pixel color components.
-    out << rByte << ' ' << gByte << ' ' << bByte << '\n';
+inline vec3 reflect(const vec3 &v, const vec3 &n) {
+    return v - 2 * dot(v, n) * n;
 }
 
 #endif

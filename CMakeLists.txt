@@ -12,4 +12,5 @@ add_executable(rtforoneweeked main.cpp
         sphere.h
         hittable_list.h
         interval.h
-        camera.h)
+        camera.h
+        material.h)
